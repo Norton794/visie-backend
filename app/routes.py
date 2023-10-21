@@ -13,6 +13,14 @@ async def create_pessoa(pessoa: PessoaIn):
 async def get_pessoas():
     return await Pessoa.all()
 
+@router.get("/pessoas/{id_pessoa}", response_model=PessoaOut)
+async def get_pessoa(id_pessoa: int):
+    pessoa = await Pessoa.get_or_none(id_pessoa=id_pessoa)
+    if pessoa is None:
+        raise HTTPException(status_code=404, detail=f"Pessoa {id_pessoa} not found")
+    return pessoa
+
+
 
 @router.put("/pessoas/{id_pessoa}", response_model=PessoaOut)
 async def update_pessoa(id_pessoa: int, pessoa: PessoaIn):
